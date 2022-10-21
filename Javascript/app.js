@@ -3,40 +3,50 @@ let button = document.getElementById('btn');
 let form = document.getElementById('dino-compare');
 
 // Create Dino Constructor
-function Dino(species, weight, height, diet, where, when, fact) {
+function Dino(species, weight, height, diet, where, when, facts) {
     this.species = species;
     this.weight = weight;
     this.height = height;
     this.diet = diet;
     this.where = where;
     this.when = when; 
-    this.fact = fact; 
+    this.facts = facts; 
 }
 
 // Create Dino Objects
-let dino1 = new Dino("Triceratops", 13000, 114, "herbavor", "North America",
- "Late Cretaceous", "First discovered in 1889 by Othniel Charles Marsh");
+let dino1 = new Dino("Triceratops", 13000, 114, "herbavor", "North America", "Late Cretaceous", 
+ ["First discovered in 1889 by Othniel Charles Marsh", 
+  "The largest known skull measures in at 5 feet long."]);
 
-let dino2 = new Dino("Tyrannosaurus Rex", 11905, 144, "carnivor", "North America",
- "Late Cretaceous", "The largest known skull measures in at 5 feet long.");
+let dino2 = new Dino("Tyrannosaurus Rex", 11905, 144, "carnivor", "North America", "Late Cretaceous", 
+ ["The largest known skull measures in at 5 feet long.", 
+ "All birds are living dinosaurs.",
+  "The Stegosaurus had between 17 and 22 seperate places and flat spines."]);
 
-let dino3 = new Dino("Anklyosaurus", 10500, 55, "herbavor", "North America",
- "Late Cretaceous", "Anklyosaurus survived for approximately 135 million years.");
+let dino3 = new Dino("Anklyosaurus", 10500, 55, "herbavor", "North America", "Late Cretaceous", 
+ ["Anklyosaurus survived for approximately 135 million years.", 
+  "The Stegosaurus had between 17 and 22 seperate places and flat spines."]);
 
-let dino4 = new Dino("Brachiosaurus", 70000, 372, "herbavor", "North America",
- "Late Jurasic", "An asteroid was named 9954 Brachiosaurus in 1991.");
+let dino4 = new Dino("Brachiosaurus", 70000, 372, "herbavor", "North America", "Late Jurasic", 
+ ["An asteroid was named 9954 Brachiosaurus in 1991.", 
+  "The Stegosaurus had between 17 and 22 seperate places and flat spines."]);
 
-let dino5 = new Dino("Stegosaurus", 11600, 79, "herbavor", "North America, Europe, Asia",
- "Late Jurasic to Early Cretaceous", "The Stegosaurus had between 17 and 22 seperate places and flat spines.");
+let dino5 = new Dino("Stegosaurus", 11600, 79, "herbavor", "North America, Europe, Asia","Late Jurasic to Early Cretaceous", 
+ ["The Stegosaurus had between 17 and 22 seperate places and flat spines.", 
+ "The largest known skull measures in at 5 feet long."]);
 
-let dino6 = new Dino("Elasmosaurus", 16000, 59, "carnivor", "North America",
- "Late Cretaceous", "Elasmosaurus was a marine reptile first discovered in Kansas.");
+let dino6 = new Dino("Elasmosaurus", 16000, 59, "carnivor", "North America", "Late Cretaceous", 
+ ["Elasmosaurus was a marine reptile first discovered in Kansas.", 
+  "All birds are living dinosaurs."]);
 
-let dino7 = new Dino("Pteranodon", 44, 20, "carnivor", "North America",
- "Late Cretaceous", "Actually a flying reptile, the Pteranodon is not a dinosaur.");
+let dino7 = new Dino("Pteranodon", 44, 20, "carnivor", "North America", "Late Cretaceous", 
+ ["Actually a flying reptile, the Pteranodon is not a dinosaur.", 
+  "The largest known skull measures in at 5 feet long."]);
 
-let dino8 = new Dino("Pigeon", 0.5, 9, "herbavor", "World Wide",
- "Holocene", "All birds are living dinosaurs.");
+let dino8 = new Dino("Pigeon", 0.5, 9, "herbavor", "World Wide", "Holocene", 
+ ["All birds are living dinosaurs.", 
+  "Actually a flying reptile, the Pteranodon is not a dinosaur.",
+  "The largest known skull measures in at 5 feet long."]);
 
 
 // Create Human Class and its Constructor
@@ -69,7 +79,7 @@ let humanData = (function arwa() {
 
 // Get humanData:
 // Update human object datd 
-function getHumanData() {
+function completeHumanObject() {
     human.name = humanData.name.value
     human.height = humanData.height.value
     human.weight = humanData.weight.value
@@ -193,8 +203,8 @@ function generateTiles() {
     // Declare array that include dinosaurs data with random arrange
     let array = shuffle([dino1, dino2, dino3, dino4, dino5, dino6, dino7, dino8])
 
-    // Update human object by calling getHumanData()
-    getHumanData()
+    // ** complete the human object with data pulled from the form when “Compare me” is clicked **
+    completeHumanObject()
 
     // Insert human in center 
     array.splice(4,0, human);
@@ -218,7 +228,9 @@ function generateTiles() {
             img.src = './images/' + element.species + '.png';
             h3.textContent = element.species;
 
-            p.textContent = element.fact;
+            // ** use Math.floor() and Math.random() to apply randomness to  dino facts.
+            let arraySize = element.facts.length;
+            p.textContent = element.facts[Math.floor(Math.random() * arraySize)];
             gridItem.appendChild(p);
         } else {
             img.src = './images/human.png';
