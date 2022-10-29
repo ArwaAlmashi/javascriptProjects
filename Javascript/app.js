@@ -1,6 +1,7 @@
 // Global variables 
 let button = document.getElementById('btn');
 let form = document.getElementById('dino-compare');
+let array = [];
 
 // Create Dino Constructor
 function Dino(species, weight, height, diet, where, when, facts) {
@@ -15,38 +16,28 @@ function Dino(species, weight, height, diet, where, when, facts) {
 
 // Create Dino Objects
 let dino1 = new Dino("Triceratops", 13000, 114, "herbavor", "North America", "Late Cretaceous", 
- ["First discovered in 1889 by Othniel Charles Marsh", 
-  "The largest known skull measures in at 5 feet long."]);
+ ["First discovered in 1889 by Othniel Charles Marsh"]);
 
 let dino2 = new Dino("Tyrannosaurus Rex", 11905, 144, "carnivor", "North America", "Late Cretaceous", 
- ["The largest known skull measures in at 5 feet long.", 
- "All birds are living dinosaurs.",
-  "The Stegosaurus had between 17 and 22 seperate places and flat spines."]);
+ ["The largest known skull measures in at 5 feet long."]);
 
 let dino3 = new Dino("Anklyosaurus", 10500, 55, "herbavor", "North America", "Late Cretaceous", 
- ["Anklyosaurus survived for approximately 135 million years.", 
-  "The Stegosaurus had between 17 and 22 seperate places and flat spines."]);
+ ["Anklyosaurus survived for approximately 135 million years."]);
 
 let dino4 = new Dino("Brachiosaurus", 70000, 372, "herbavor", "North America", "Late Jurasic", 
- ["An asteroid was named 9954 Brachiosaurus in 1991.", 
-  "The Stegosaurus had between 17 and 22 seperate places and flat spines."]);
+ ["An asteroid was named 9954 Brachiosaurus in 1991."]);
 
 let dino5 = new Dino("Stegosaurus", 11600, 79, "herbavor", "North America, Europe, Asia","Late Jurasic to Early Cretaceous", 
- ["The Stegosaurus had between 17 and 22 seperate places and flat spines.", 
- "The largest known skull measures in at 5 feet long."]);
+ ["The Stegosaurus had between 17 and 22 seperate places and flat spines."]);
 
 let dino6 = new Dino("Elasmosaurus", 16000, 59, "carnivor", "North America", "Late Cretaceous", 
- ["Elasmosaurus was a marine reptile first discovered in Kansas.", 
-  "All birds are living dinosaurs."]);
+ ["Elasmosaurus was a marine reptile first discovered in Kansas."]);
 
 let dino7 = new Dino("Pteranodon", 44, 20, "carnivor", "North America", "Late Cretaceous", 
- ["Actually a flying reptile, the Pteranodon is not a dinosaur.", 
-  "The largest known skull measures in at 5 feet long."]);
+ ["Actually a flying reptile, the Pteranodon is not a dinosaur."]);
 
 let dino8 = new Dino("Pigeon", 0.5, 9, "herbavor", "World Wide", "Holocene", 
- ["All birds are living dinosaurs.", 
-  "Actually a flying reptile, the Pteranodon is not a dinosaur.",
-  "The largest known skull measures in at 5 feet long."]);
+ ["All birds are living dinosaurs."]);
 
 
 // Create Human Class and its Constructor
@@ -137,12 +128,10 @@ function compareContinent(human, dino) {
 // Valdiate form data:
 // Check if all field are fill or not, if all filled return true, otherwise return false and alert user
 function isNotVaildData() {
-
     let name = document.getElementById('name').value;
     let feet = document.getElementById('feet').value;
     let inches = document.getElementById('inches').value;
     let weight = document.getElementById('weight').value;
-
 
     if (name == "" & feet == "" & inches == "" & weight == "") {
         alert("Please fil all fields")
@@ -192,6 +181,23 @@ function regenerateInfoghraphic() {
     })
 }
 
+// This function to give every dino facts by comaring functions 
+// Also generate facts for human object 
+function generateAnotherFacts(array) {
+    human.facts = []
+    for (let i = 0; i < array.length; i++) {
+
+        if (array[i].species != "Pigeon"){
+            array[i].facts.push(compareWeight(human, array[i]))
+            array[i].facts.push(compareHeight(human, array[i]))
+            array[i].facts.push(compareContinent(human, array[i]))
+        }
+        
+        human.facts.push(compareWeight(human, array[i]))
+    }
+    
+}
+
 // Generate Tiles:
 // This function do:
 // (1) Generate a random array of dinosaurs
@@ -199,12 +205,14 @@ function regenerateInfoghraphic() {
 // (3) Generate Tiles: with check the type of thw object
 function generateTiles() {
 
-
     // Declare array that include dinosaurs data with random arrange
-    let array = shuffle([dino1, dino2, dino3, dino4, dino5, dino6, dino7, dino8])
+    array = shuffle([dino1, dino2, dino3, dino4, dino5, dino6, dino7, dino8])
 
     // ** complete the human object with data pulled from the form when “Compare me” is clicked **
     completeHumanObject()
+
+    // Add more facts to dinosaurs 
+    generateAnotherFacts(array)
 
     // Insert human in center 
     array.splice(4,0, human);
@@ -235,6 +243,8 @@ function generateTiles() {
         } else {
             img.src = './images/human.png';
             h3.textContent = element.name;
+            p.textContent = human.facts[Math.floor(Math.random() * human.facts.length)]
+            gridItem.appendChild(p);
         }
 
         gridItem.appendChild(h3);
@@ -247,7 +257,6 @@ function generateTiles() {
 
 // On button click, prepare and display infographic
 button.addEventListener("click", function() {
-
 
     if (isNotVaildData()) {
         return
